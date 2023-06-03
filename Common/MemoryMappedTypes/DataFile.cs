@@ -17,6 +17,274 @@ public delegate bool MapFeatureDelegate(MapFeatureData featureData);
 /// <summary>
 ///     Aggregation of all the data needed to render a map feature
 /// </summary>
+
+
+
+public class PropertiesClass
+{
+    public enum Highway
+    {
+        MOTORWAY,
+        TRUNK,
+        PRIMARY,
+        SECONDARY,
+        TERTIARY,
+        UNCLASSIFIED,
+        RESIDENTIAL,
+        ROAD,
+        NOTHING,
+        UNKNOWN,
+    }
+
+
+    public enum Water
+    {
+        NOTHING,
+        UNKNOWN,
+    }
+    public enum Boundary
+    {
+        NOTHING,
+        ADMINISTRATIVE,
+        FOREST,
+    }
+
+    public enum AdminLevel
+    {
+        LEVEL2,
+        NOTENTERED
+
+    }
+
+    public enum PopulatedPlace
+    {
+        CITY,
+        TOWN,
+        LOCALITY,
+        HAMLET,
+        NOTENTERED
+    }
+
+    public enum Railway
+    {
+        NOTHING
+    }
+    public enum Natural
+    {
+        NOTHING,
+        FELL,
+        GRASSLAND,
+        HEATH,
+        MOOR,
+        SCRUB,
+        WETLAND,
+        WOOD,
+        TREE_ROW,
+        BARE_ROCK,
+        ROCK,
+        SCREE,
+        BEACH,
+        SAND,
+        WATER
+    };
+
+    public enum Landuse
+    {
+        NOTHING,
+        FOREST,
+        ORCHARD,
+        RESIDENTIAL,
+        CEMETERY,
+        INDUSTRIAL,
+        COMMERCIAL,
+        SQUARE,
+        CONSTRUCTION,
+        MILITARY,
+        QUARRY,
+        BROWNFIELD,
+        FARM,
+        MEADOW,
+        GRASS,
+        GREENFIELD,
+        RECREATION_GROUND,
+        WINTER_SPORTS,
+        ALLOTMENTS,
+        RESERVOIR,
+        BASIN,
+    };
+
+    public enum Building
+    {
+        NOTHING,
+    };
+    public enum Leisure
+    {
+        NOTHING,
+    };
+    public enum Amenity
+    {
+        NOTHING,
+    };
+    public Highway highway = Highway.NOTHING;
+
+    private static Dictionary<string, Highway> MapHighway = new Dictionary<string, Highway>(){
+        { "motorway", Highway.MOTORWAY },
+        { "trunk", Highway.TRUNK },
+        { "primary", Highway.PRIMARY },
+        { "secondary", Highway.SECONDARY },
+        { "tertiary", Highway.TERTIARY },
+        { "unclassified", Highway.UNCLASSIFIED },
+        { "residential", Highway.RESIDENTIAL },
+        { "road", Highway.ROAD },
+    };
+    public Water water = Water.NOTHING;
+
+    private static Dictionary<string, Water> MapWater = new Dictionary<string, Water>() { };
+    public Boundary boundary = Boundary.NOTHING;
+
+    private static Dictionary<string, Boundary> MapBoundary = new Dictionary<string, Boundary>(){
+        { "administrative", Boundary.ADMINISTRATIVE },
+        { "forest", Boundary.FOREST },
+    };
+    public AdminLevel adminLevel = AdminLevel.NOTENTERED;
+
+    private static Dictionary<string, AdminLevel> MapAdminLevel = new Dictionary<string, AdminLevel>() {
+    { "2", AdminLevel.LEVEL2 },
+    };
+    public PopulatedPlace populatedPlace = PopulatedPlace.NOTENTERED;
+
+    private static Dictionary<string, PopulatedPlace> MapPopulatedPlace = new Dictionary<string, PopulatedPlace>() {
+        { "city", PopulatedPlace.CITY },
+        { "town", PopulatedPlace.TOWN },
+        { "locality", PopulatedPlace.LOCALITY },
+        { "hamlet", PopulatedPlace.HAMLET }
+    };
+    public Railway railway = Railway.NOTHING;
+
+    private static Dictionary<string, Railway> MapRailway = new Dictionary<string, Railway>() { };
+    public Natural natural = Natural.NOTHING;
+
+    private static Dictionary<string, Natural> MapNatural = new Dictionary<string, Natural>() {
+        { "fell", Natural.FELL },
+        { "grassland", Natural.GRASSLAND },
+        { "heath", Natural.HEATH },
+        { "moor", Natural.MOOR },
+        { "scrub", Natural.SCRUB },
+        { "wetland", Natural.WETLAND },
+        { "wood", Natural.WOOD },
+        { "tree_row", Natural.TREE_ROW },
+        { "bare_rock", Natural.BARE_ROCK },
+        { "rock", Natural.ROCK },
+        { "scree", Natural.SCREE },
+        { "beach", Natural.BEACH },
+        { "sand", Natural.SAND },
+        { "water", Natural.WATER },
+    };
+    public Landuse landuse = Landuse.NOTHING;
+
+    private static Dictionary<string, Landuse> MapLanduse = new Dictionary<string, Landuse>() {
+        { "forest", Landuse.FOREST },
+        { "orchard", Landuse.ORCHARD },
+        { "residential", Landuse.RESIDENTIAL },
+        { "cemetery", Landuse.CEMETERY },
+        { "industrial", Landuse.INDUSTRIAL },
+        { "commercial", Landuse.COMMERCIAL },
+        { "square", Landuse.SQUARE },
+        { "construction", Landuse.CONSTRUCTION },
+        { "military", Landuse.MILITARY },
+        { "quarry", Landuse.QUARRY },
+        { "brownfield", Landuse.BROWNFIELD },
+        { "farm", Landuse.FARM },
+        { "meadow", Landuse.MEADOW },
+        { "grass", Landuse.GRASS },
+        { "greenfield", Landuse.GREENFIELD },
+        { "recreation_ground", Landuse.RECREATION_GROUND },
+        { "winter_sports", Landuse.WINTER_SPORTS },
+        { "allotments", Landuse.ALLOTMENTS },
+        { "reservoir", Landuse.RESERVOIR },
+        { "basin", Landuse.BASIN },
+    };
+    public Building building = Building.NOTHING;
+
+    private static Dictionary<string, Building> MapBuilding = new Dictionary<string, Building>() { };
+    public Leisure leisure = Leisure.NOTHING;
+
+    private static Dictionary<string, Leisure> MapLeisure = new Dictionary<string, Leisure>() { };
+    public Amenity amenity = Amenity.NOTHING;
+
+    private static Dictionary<string, Amenity> MapAmenity = new Dictionary<string, Amenity>() { };
+    public string? name = null;
+
+    public PropertiesClass(Dictionary<string, string> properties)
+    {
+        foreach (KeyValuePair<string, string> entered in properties)
+        {
+            if (entered.Key.StartsWith("highway"))
+            {
+                string helper = MapHighway.Keys.Where(p => entered.Value.StartsWith(p)).FirstOrDefault("");
+                MapHighway.TryGetValue(helper, out highway);
+            }
+            else if (entered.Key.StartsWith("water"))
+            {
+                string helper = MapWater.Keys.Where(p => entered.Value.StartsWith(p)).FirstOrDefault("");
+                MapWater.TryGetValue(helper, out water);
+            }
+            else if (entered.Key.StartsWith("boundary"))
+            {
+                string helper = MapBoundary.Keys.Where(p => entered.Value.StartsWith(p)).FirstOrDefault("");
+                MapBoundary.TryGetValue(helper, out boundary);
+            }
+            else if (entered.Key == "admin_level")
+            {
+                string helper = MapAdminLevel.Keys.Where(p => entered.Value.StartsWith(p)).FirstOrDefault("");
+                MapAdminLevel.TryGetValue(helper, out adminLevel);
+            }
+            else if (entered.Key.StartsWith("place"))
+            {
+                string helper = MapPopulatedPlace.Keys.Where(p => entered.Value.StartsWith(p)).FirstOrDefault("");
+                MapPopulatedPlace.TryGetValue(helper, out populatedPlace);
+            }
+            else if (entered.Key.StartsWith("railway"))
+            {
+                string helper = MapRailway.Keys.Where(p => entered.Value.StartsWith(p)).FirstOrDefault("");
+                MapRailway.TryGetValue(helper, out railway);
+            }
+            else if (entered.Key.StartsWith("natural"))
+            {
+                string helper = MapNatural.Keys.Where(p => entered.Value.StartsWith(p)).FirstOrDefault("");
+                MapNatural.TryGetValue(helper, out natural);
+            }
+            else if (entered.Key.StartsWith("landuse"))
+            {
+                string helper = MapLanduse.Keys.Where(p => entered.Value.StartsWith(p)).FirstOrDefault("");
+                MapLanduse.TryGetValue(helper, out landuse);
+            }
+            else if (entered.Key.StartsWith("building"))
+            {
+                string helper = MapBuilding.Keys.Where(p => entered.Value.StartsWith(p)).FirstOrDefault("");
+                MapBuilding.TryGetValue(helper, out building);
+            }
+            else if (entered.Key.StartsWith("leisure"))
+            {
+                string helper = MapLeisure.Keys.Where(p => entered.Value.StartsWith(p)).FirstOrDefault("");
+                MapLeisure.TryGetValue(helper, out leisure);
+            }
+            else if (entered.Key.StartsWith("amenity"))
+            {
+                string helper = MapAmenity.Keys.Where(p => entered.Value.StartsWith(p)).FirstOrDefault("");
+                MapAmenity.TryGetValue(helper, out amenity);
+            }
+            else if (entered.Key.StartsWith("name"))
+            {
+                name = entered.Value;
+            }
+        }
+    }
+
+
+}
+
+
 public readonly ref struct MapFeatureData
 {
     public long Id { get; init; }
@@ -24,7 +292,7 @@ public readonly ref struct MapFeatureData
     public GeometryType Type { get; init; }
     public ReadOnlySpan<char> Label { get; init; }
     public ReadOnlySpan<Coordinate> Coordinates { get; init; }
-    public Dictionary<string, string> Properties { get; init; }
+    public PropertiesClass Properties { get; init; }
 }
 
 /// <summary>
@@ -189,13 +457,13 @@ public unsafe class DataFile : IDisposable
                     }
 
                     if (!action(new MapFeatureData
-                        {
-                            Id = feature->Id,
-                            Label = label,
-                            Coordinates = coordinates,
-                            Type = feature->GeometryType,
-                            Properties = properties
-                        }))
+                    {
+                        Id = feature->Id,
+                        Label = label,
+                        Coordinates = coordinates,
+                        Type = feature->GeometryType,
+                        Properties = new PropertiesClass(properties)
+                    }))
                     {
                         break;
                     }
